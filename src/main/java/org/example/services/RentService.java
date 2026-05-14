@@ -211,10 +211,8 @@ public class RentService {
             throw new IllegalArgumentException("End time cannot be before begin time");
         }
 
-        long hours = java.time.Duration.between(rent.getBeginTime(), endTime).toHours();
-        if (hours == 0) {
-            hours = 1; // Minimum 1 hour charge
-        }
+        long seconds = java.time.Duration.between(rent.getBeginTime(), endTime).getSeconds();
+        long hours = Math.max(1L, (long) Math.ceil(seconds / 3600.0));
 
         double perHourPrice = rent.getVehiclePerHourPrice();
         double totalCost = perHourPrice * hours;
